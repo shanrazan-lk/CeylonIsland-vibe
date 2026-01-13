@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ceylon Island Vibe - Premium curated travel experiences for European travelers.">
+    <title>Ceylon Island Vibe | Stay. Taste. Explore.</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* DESIGN SYSTEM */
+        :root {
+            --color-deep-ocean: #0E3A43;
+            --color-palm-green: #2F6F5E;
+            --color-sand-beige: #F4EFEA;
+            --color-sunset-gold: #D4A373;
+            --color-white: #FFFFFF;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --spacing-section: 6rem;
+            --container-width: 1200px;
+            --border-radius: 8px;
+            --shadow-soft: 0 10px 30px rgba(14, 58, 67, 0.08);
+            --transition-smooth: all 0.4s ease;
+        }
+
+        /* RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-sand-beige);
+            color: var(--color-deep-ocean);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 600; line-height: 1.2; }
+        img { max-width: 100%; display: block; object-fit: cover; }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+        ul { list-style: none; }
+
+        /* UTILITIES */
+        .container { width: 90%; max-width: var(--container-width); margin: 0 auto; }
+        .text-center { text-align: center; }
+        .text-gold { color: var(--color-sunset-gold); }
+        .btn {
+            display: inline-block; padding: 14px 32px; border-radius: 50px;
+            font-size: 0.95rem; letter-spacing: 0.5px; font-weight: 500;
+            cursor: pointer; transition: var(--transition-smooth); border: 1px solid transparent;
+        }
+        .btn-primary { background-color: var(--color-white); color: var(--color-deep-ocean); border-color: var(--color-white); }
+        .btn-primary:hover { background-color: var(--color-deep-ocean); color: var(--color-white); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--color-white); color: var(--color-white); }
+        .btn-outline:hover { background-color: var(--color-white); color: var(--color-deep-ocean); }
+        .btn-gold { background-color: var(--color-sunset-gold); color: var(--color-white); }
+        .btn-gold:hover { background-color: #b88b5e; }
+
+        /* ANIMATIONS */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* NAVBAR */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0; z-index: 1000; transition: var(--transition-smooth); }
+        .navbar.scrolled { background: rgba(244, 239, 234, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .brand-logo { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--color-white); letter-spacing: -0.5px; }
+        .navbar.scrolled .brand-logo { color: var(--color-deep-ocean); }
+        .lang-switch { display: flex; gap: 10px; }
+        .lang-btn { background: transparent; border: none; color: var(--color-white); font-family: var(--font-body); font-size: 0.9rem; cursor: pointer; opacity: 0.6; transition: var(--transition-smooth); }
+        .navbar.scrolled .lang-btn { color: var(--color-deep-ocean); }
+        .lang-btn:hover, .lang-btn.active { opacity: 1; font-weight: 600; }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(14, 58, 67, 0.3), rgba(14, 58, 67, 0.4)),
+                        url('https://picsum.photos/seed/srilankaocean/1920/1080') no-repeat center center/cover;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            color: var(--color-white); padding-top: 60px;
+        }
+        .hero-content { max-width: 800px; padding: 20px; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 1.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .hero p { font-size: 1.2rem; margin-bottom: 2.5rem; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; opacity: 0.8; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);} 40% {transform: translateY(-10px) translateX(-50%);} 60% {transform: translateY(-5px) translateX(-50%);} }
+
+        /* SECTIONS */
+        section { padding: var(--spacing-section) 0; }
+        .section-header { margin-bottom: 3rem; max-width: 700px; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-palm-green); }
+        .section-header p { font-size: 1.1rem; color: #555; }
+
+        /* ABOUT */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .about-text h3 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .about-text p { margin-bottom: 1.5rem; color: #444; }
+        .about-img-wrapper img { border-radius: var(--border-radius); box-shadow: var(--shadow-soft); }
+
+        /* CARDS (Shared for Stay & Explore) */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { background: var(--color-white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); display: flex; flex-direction: column; height: 100%; }
+        .card:hover { transform: translateY(-10px); }
+        .card-img-container { height: 250px; overflow: hidden; }
+        .card-img-container img { width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .card:hover .card-img-container img { transform: scale(1.05); }
+        .card-content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .location-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-sunset-gold); margin-bottom: 0.5rem; font-weight: 600; }
+        .card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-deep-ocean); }
+        .card p { font-size: 0.95rem; color: #666; margin-bottom: 1.5rem; flex-grow: 1; }
+        .card-btn { align-self: flex-start; padding: 10px 24px; background: none; border: 1px solid var(--color-deep-ocean); color: var(--color-deep-ocean); border-radius: 50px; font-size: 0.85rem; cursor: pointer; transition: var(--transition-smooth); }
+        .card-btn:hover { background: var(--color-deep-ocean); color: var(--color-white); }
+
+        /* TASTE */
+        .taste-section { background-color: var(--color-white); }
+        .taste-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; }
+        .taste-img { height: 100%; min-height: 500px; }
+        .taste-img img { width: 100%; height: 100%; }
+        .taste-content { padding: 4rem; }
+
+        /* GALLERY */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+        .gallery-item { position: relative; aspect-ratio: 1 / 1; overflow: hidden; cursor: pointer; }
+        @media (min-width: 768px) { .gallery-item:nth-child(3n+1) { grid-column: span 1; grid-row: span 2; aspect-ratio: auto; } }
+        .gallery-item img { width: 100%; height: 100%; transition: transform 0.5s ease; }
+        .gallery-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 58, 67, 0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; text-align: center; padding: 20px; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-text { color: var(--color-white); transform: translateY(20px); transition: transform 0.3s ease; }
+        .gallery-item:hover .gallery-text { transform: translateY(0); }
+        .gallery-text h4 { font-family: var(--font-body); font-size: 1.1rem; margin-bottom: 5px; color: var(--color-sunset-gold); }
+
+        /* LIGHTBOX */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 58, 67, 0.95); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .lightbox.active { display: flex; opacity: 1; }
+        .lightbox-content { max-width: 90%; max-height: 85vh; border: 4px solid var(--color-white); }
+        .lightbox-close { position: absolute; top: 30px; right: 30px; color: var(--color-white); font-size: 3rem; cursor: pointer; line-height: 1; }
+
+        /* WHY US */
+        .why-us { background-color: var(--color-palm-green); color: var(--color-white); }
+        .why-us .section-header h2 { color: var(--color-white); }
+        .why-us .section-header p { color: rgba(255,255,255,0.8); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; text-align: center; }
+        .feature-item i { font-size: 2.5rem; color: var(--color-sunset-gold); margin-bottom: 1.5rem; display: block; }
+        .feature-item h4 { font-size: 1.2rem; margin-bottom: 1rem; }
+        .feature-item p { font-size: 0.9rem; opacity: 0.9; }
+
+        /* CONTACT */
+        .contact-section { text-align: center; }
+        .contact-form-container { max-width: 600px; margin: 0 auto; text-align: left; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; }
+        .form-control { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: var(--border-radius); font-family: var(--font-body); font-size: 1rem; transition: var(--transition-smooth); }
+        .form-control:focus { outline: none; border-color: var(--color-palm-green); background: #fafafa; }
+        .form-feedback { margin-top: 1rem; padding: 1rem; background-color: var(--color-palm-green); color: white; border-radius: var(--border-radius); display: none; }
+
+        /* FOOTER */
+        footer { background-color: var(--color-deep-ocean); color: var(--color-white); padding: 4rem 0 2rem; text-align: center; }
+        .footer-brand h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--color-white); }
+        .footer-brand p { opacity: 0.7; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 2rem; }
+        .social-link { display: inline-block; margin: 0 10px; width: 40px; height: 40px; line-height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: var(--color-white); font-size: 0.9rem; transition: var(--transition-smooth); }
+        .social-link:hover { background: var(--color-sunset-gold); }
+        .copyright { font-size: 0.8rem; opacity: 0.5; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+
+        /* WHATSAPP */
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; transition: var(--transition-smooth); }
+        .whatsapp-float:hover { transform: scale(1.1); background-color: #20b857; }
+
+        @media (max-width: 768px) {
+            :root { --spacing-section: 4rem; }
+            .about-grid, .taste-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .taste-img { min-height: 250px; order: -1; }
+            .taste-content { padding: 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-buttons { flex-direction: column; align-items: center; gap: 15px; }
+            .btn { width: 100%; max-width: 300px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo">Ceylon Island Vibe</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="en" onclick="changeLanguage('en')">EN</button>
+                <span>|</span>
+                <button class="lang-btn" data-lang="de" onclick="changeLanguage('de')">DE</button>
+                <span>|</span>
+                <button class="lang-btn" data-lang="fr" onclick="changeLanguage('fr')">FR</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-content reveal">
+            <p data-key="heroTagline" class="text-gold">Stay. Taste. Explore Sri Lanka.</p>
+            <h1 data-key="heroTitle">Discover the Soul of the Island</h1>
+            <div class="hero-buttons">
+                <a href="#stay" class="btn btn-primary" data-key="btnExploreStays">Explore Stays</a>
+                <a href="https://wa.me/94770000000" target="_blank" class="btn btn-outline" data-key="btnWhatsApp">Chat on WhatsApp</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img-wrapper reveal">
+                    <img src="https://picsum.photos/seed/srilankatea/600/700" alt="Sri Lankan Hospitality">
+                </div>
+                <div class="about-text reveal">
+                    <div class="section-header">
+                        <h2 data-key="aboutTitle">Our Story</h2>
+                    </div>
+                    <h3 data-key="aboutSubTitle">Authenticity Meets Comfort</h3>
+                    <p data-key="aboutText1">Ceylon Island Vibe is a curated collection of experiences designed for the modern traveler seeking depth, not just destinations. We believe in slow travel, where the rhythm of the ocean dictates your schedule.</p>
+                    <p data-key="aboutText2">From the misty hills of Ella to the golden sands of Weligama, we connect you with the heart of Sri Lankan culture, ensuring every moment is imbued with warmth and elegance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STAY -->
+    <section id="stay" style="background-color: #fff;">
+        <div class="container">
+            <div class="section-header text-center reveal">
+                <h2 data-key="stayTitle">Curated Accommodations</h2>
+                <p data-key="staySubtitle">Handpicked sanctuaries for relaxation and inspiration.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card reveal">
+                    <div class="card-img-container">
+                        <img src="https://picsum.photos/seed/ellaella/600/400" alt="Heavens Gate Ella">
+                    </div>
+                    <div class="card-content">
+                        <span class="location-tag" data-key="stay1Loc">Ella, Hill Country</span>
+                        <h3 data-key="stay1Title">Heavens Gate</h3>
+                        <p data-key="stay1Desc">A boutique hotel perched on the edge of the Ella cliff. Wake up to floating clouds and endless tea plantations in absolute luxury.</p>
+                        <button class="card-btn" data-key="btnViewDetails">View Details</button>
+                    </div>
+                </div>
+                <div class="card reveal">
+                    <div class="card-img-container">
+                        <img src="https://picsum.photos/seed/weligamabeach/600/400" alt="Ocean Echo Weligama">
+                    </div>
+                    <div class="card-content">
+                        <span class="location-tag" data-key="stay2Loc">Weligama, South Coast</span>
+                        <h3 data-key="stay2Title">Ocean Echo Villa</h3>
+                        <p data-key="stay2Desc">A private villa steps away from the surf. Minimalist design meets tropical charm, perfect for couples and surfers alike.</p>
+                        <button class="card-btn" data-key="btnViewDetails">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TASTE -->
+    <section id="taste" class="taste-section">
+        <div class="taste-layout">
+            <div class="taste-img">
+                <img src="https://picsum.photos/seed/srilankanfood/800/800" alt="Culinary Delight">
+            </div>
+            <div class="taste-content reveal">
+                <span class="location-tag" data-key="tasteLoc">Ella & Beyond</span>
+                <h2 data-key="tasteTitle" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--color-deep-ocean);">Taste the Authentic Flavors</h2>
+                <p data-key="tasteText">Experience the true spice of Ceylon. We guide you to hidden gems like Chingu Restaurant in Ella, where local recipes are passed down through generations. Fresh seafood, aromatic curries, and tropical fruits prepared with love.</p>
+                <br>
+                <a href="#contact" class="btn btn-gold" data-key="btnDiningPlan">Plan Your Dining</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE -->
+    <section id="explore">
+        <div class="container">
+            <div class="section-header text-center reveal">
+                <h2 data-key="exploreTitle">Ocean Adventures</h2>
+                <p data-key="exploreSubtitle">Safe, guided experiences led by local experts.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card reveal">
+                    <div class="card-img-container">
+                        <img src="https://picsum.photos/seed/surfsri/600/400" alt="Surfing">
+                    </div>
+                    <div class="card-content">
+                        <span class="location-tag" data-key="exp1Loc">Weligama Bay</span>
+                        <h3 data-key="exp1Title">Surf Sessions</h3>
+                        <p data-key="exp1Desc">Whether you are a beginner or pro, our certified instructors will guide you to the perfect wave. Includes equipment rental and safety briefing.</p>
+                        <button class="card-btn" data-key="btnBook">Book Session</button>
+                    </div>
+                </div>
+                <div class="card reveal">
+                    <div class="card-img-container">
+                        <img src="https://picsum.photos/seed/snorkelsri/600/400" alt="Snorkeling">
+                    </div>
+                    <div class="card-content">
+                        <span class="location-tag" data-key="exp2Loc">Mirissa & Weligama</span>
+                        <h3 data-key="exp2Title">Snorkeling Tours</h3>
+                        <p data-key="exp2Desc">Dive into crystal clear waters to explore vibrant coral reefs and marine life. A family-friendly adventure focused on respect for nature.</p>
+                        <button class="card-btn" data-key="btnBook">Book Tour</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header text-center reveal">
+                <h2 data-key="galleryTitle">Island Moments</h2>
+            </div>
+            <div class="gallery-grid reveal">
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://picsum.photos/seed/gal1/600/800" alt="Gallery Image 1" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">
+                            <h4>Tea Trails</h4>
+                            <p>Nuwara Eliya</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://picsum.photos/seed/gal2/600/600" alt="Gallery Image 2" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">
+                            <h4>Sunset Vibes</h4>
+                            <p>Weligama</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://picsum.photos/seed/gal3/600/800" alt="Gallery Image 3" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">
+                            <h4>Local Tuk Tuks</h4>
+                            <p>Galle Fort</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://picsum.photos/seed/gal4/600/600" alt="Gallery Image 4" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">
+                            <h4>Spice Garden</h4>
+                            <p>Matale</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://picsum.photos/seed/gal5/600/600" alt="Gallery Image 5" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-text">
+                            <h4>Breakfast</h4>
+                            <p>Heavens Gate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section id="why-us" class="why-us">
+        <div class="container">
+            <div class="section-header text-center reveal">
+                <h2 data-key="whyTitle">Why Choose Us</h2>
+                <p data-key="whySubtitle">We craft journeys, not just bookings.</p>
+            </div>
+            <div class="features-grid reveal">
+                <div class="feature-item">
+                    <i><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></i>
+                    <h4 data-key="why1Title">Handpicked</h4>
+                    <p data-key="why1Desc">Personally inspected locations ensuring quality and soul.</p>
+                </div>
+                <div class="feature-item">
+                    <i><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></i>
+                    <h4 data-key="why2Title">Trusted</h4>
+                    <p data-key="why2Desc">Highly rated by European travelers for safety and service.</p>
+                </div>
+                <div class="feature-item">
+                    <i><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></i>
+                    <h4 data-key="why3Title">Authentic</h4>
+                    <p data-key="why3Desc">Real connections with local culture and nature.</p>
+                </div>
+                <div class="feature-item">
+                    <i><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></i>
+                    <h4 data-key="why4Title">Personal</h4>
+                    <p data-key="why4Desc">We treat you like family, not tourists.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header text-center reveal">
+                <h2 data-key="contactTitle">Start Your Journey</h2>
+                <p data-key="contactSubtitle">Get in touch for personalized recommendations.</p>
+            </div>
+            <div class="contact-form-container reveal">
+                <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="name" data-key="lblName">Your Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-key="lblEmail">Your Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-key="lblMessage">Your Message</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" data-key="btnSend">Send Message</button>
+                </form>
+                <div id="formFeedback" class="form-feedback" data-key="msgSuccess">
+                    Thank you! We have received your message and will contact you shortly.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-brand">
+                <h2>Ceylon Island Vibe</h2>
+                <p data-key="heroTagline">Stay. Taste. Explore Sri Lanka.</p>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Instagram">IG</a>
+                <a href="#" class="social-link" aria-label="Facebook">FB</a>
+                <a href="#" class="social-link" aria-label="WhatsApp">WA</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Ceylon Island Vibe. All Rights Reserved. Sri Lanka.
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/94770000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    </a>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="">
+    </div>
+
+    <script>
+        // LANGUAGE DATA
+        const translations = {
+            en: {
+                heroTagline: "Stay. Taste. Explore Sri Lanka.",
+                heroTitle: "Discover the Soul of the Island",
+                btnExploreStays: "Explore Stays",
+                btnWhatsApp: "Chat on WhatsApp",
+                aboutTitle: "Our Story",
+                aboutSubTitle: "Authenticity Meets Comfort",
+                aboutText1: "Ceylon Island Vibe is a curated collection of experiences designed for the modern traveler seeking depth, not just destinations. We believe in slow travel, where the rhythm of the ocean dictates your schedule.",
+                aboutText2: "From the misty hills of Ella to the golden sands of Weligama, we connect you with the heart of Sri Lankan culture, ensuring every moment is imbued with warmth and elegance.",
+                stayTitle: "Curated Accommodations",
+                staySubtitle: "Handpicked sanctuaries for relaxation and inspiration.",
+                stay1Loc: "Ella, Hill Country",
+                stay1Title: "Heavens Gate",
+                stay1Desc: "A boutique hotel perched on the edge of the Ella cliff. Wake up to floating clouds and endless tea plantations in absolute luxury.",
+                stay2Loc: "Weligama, South Coast",
+                stay2Title: "Ocean Echo Villa",
+                stay2Desc: "A private villa steps away from the surf. Minimalist design meets tropical charm, perfect for couples and surfers alike.",
+                btnViewDetails: "View Details",
+                tasteLoc: "Ella & Beyond",
+                tasteTitle: "Taste the Authentic Flavors",
+                tasteText: "Experience the true spice of Ceylon. We guide you to hidden gems like Chingu Restaurant in Ella, where local recipes are passed down through generations. Fresh seafood, aromatic curries, and tropical fruits prepared with love.",
+                btnDiningPlan: "Plan Your Dining",
+                exploreTitle: "Ocean Adventures",
+                exploreSubtitle: "Safe, guided experiences led by local experts.",
+                exp1Loc: "Weligama Bay",
+                exp1Title: "Surf Sessions",
+                exp1Desc: "Whether you are a beginner or pro, our certified instructors will guide you to the perfect wave. Includes equipment rental and safety briefing.",
+                exp2Loc: "Mirissa & Weligama",
+                exp2Title: "Snorkeling Tours",
+                exp2Desc: "Dive into crystal clear waters to explore vibrant coral reefs and marine life. A family-friendly adventure focused on respect for nature.",
+                btnBook: "Book Session",
+                galleryTitle: "Island Moments",
+                whyTitle: "Why Choose Us",
+                whySubtitle: "We craft journeys, not just bookings.",
+                why1Title: "Handpicked",
+                why1Desc: "Personally inspected locations ensuring quality and soul.",
+                why2Title: "Trusted",
+                why2Desc: "Highly rated by European travelers for safety and service.",
+                why3Title: "Authentic",
+                why3Desc: "Real connections with local culture and nature.",
+                why4Title: "Personal",
+                why4Desc: "We treat you like family, not tourists.",
+                contactTitle: "Start Your Journey",
+                contactSubtitle: "Get in touch for personalized recommendations.",
+                lblName: "Your Name",
+                lblEmail: "Your Email",
+                lblMessage: "Your Message",
+                btnSend: "Send Message",
+                msgSuccess: "Thank you! We have received your message and will contact you shortly."
+            },
+            de: {
+                heroTagline: "Übernachten. Genießen. Sri Lanka entdecken.",
+                heroTitle: "Entdecken Sie die Seele der Insel",
+                btnExploreStays: "Unterkünfte erkunden",
+                btnWhatsApp: "WhatsApp Chat",
+                aboutTitle: "Unsere Geschichte",
+                aboutSubTitle: "Authentizität trifft Komfort",
+                aboutText1: "Ceylon Island Vibe ist eine kuratierte Sammlung von Erlebnissen für den modernen Reisenden, der Tiefe sucht, nicht nur Ziele. Wir glauben an Slow Travel.",
+                aboutText2: "Von den nebligen Hügeln ELLAs bis zu den goldenen Stränden Weligamas verbinden wir Sie mit dem Herzen der sri-lankischen Kultur.",
+                stayTitle: "Kurzierte Unterkünfte",
+                staySubtitle: "Handverlesene Zufluchtsorte für Entspannung.",
+                stay1Loc: "Ella, Bergland",
+                stay1Title: "Heavens Gate",
+                stay1Desc: "Ein Boutique-Hotel am Rand der Ella-Klippe. Erwachen Sie zu schwebenden Wolken und endlosen Teeplantagen in absolutem Luxus.",
+                stay2Loc: "Weligama, Südküste",
+                stay2Title: "Ocean Echo Villa",
+                stay2Desc: "Eine private Villa nur wenige Schritte vom Surf entfernt. Minimalistisches Design trifft auf tropischen Charme.",
+                btnViewDetails: "Details ansehen",
+                tasteLoc: "Ella & Umgebung",
+                tasteTitle: "Genießen Sie die authentischen Aromen",
+                tasteText: "Erleben Sie den wahren Gewürz Ceylons. Wir führen Sie zu versteckten Juwelen wie dem Chingu Restaurant in Ella. Frischer Fisch und Currys mit Liebe zubereitet.",
+                btnDiningPlan: "Essen planen",
+                exploreTitle: "Ozean-Abenteuer",
+                exploreSubtitle: "Sichere, geführte Erlebnisse mit lokalen Experten.",
+                exp1Loc: "Weligama Bay",
+                exp1Title: "Surf-Sessions",
+                exp1Desc: "Egal ob Anfänger oder Profi, unsere zertifizierten Lehrer führen Sie zur perfekten Welle. Inklusive Ausrüstung.",
+                exp2Loc: "Mirissa & Weligama",
+                exp2Title: "Schnorchel-Touren",
+                exp2Desc: "Tauchen Sie in kristallklares Wasser, um lebendige Korallenriffe zu erkunden. Ein familienfreundliches Abenteuer.",
+                btnBook: "Buchen",
+                galleryTitle: "Inselmomente",
+                whyTitle: "Warum wir wählen",
+                whySubtitle: "Wir gestalten Reisen, nicht nur Buchungen.",
+                why1Title: "Handverlesen",
+                why1Desc: "Persönlich inspizierte Orte für Qualität und Seele.",
+                why2Title: "Vertrauenswürdig",
+                why2Desc: "Hoch bewertet von europäischen Reisenden.",
+                why3Title: "Authentisch",
+                why3Desc: "Echte Verbindungen zur lokalen Kultur.",
+                why4Title: "Persönlich",
+                why4Desc: "Wir behandeln Sie wie Familie.",
+                contactTitle: "Starten Sie Ihre Reise",
+                contactSubtitle: "Kontaktieren Sie uns für persönliche Empfehlungen.",
+                lblName: "Ihr Name",
+                lblEmail: "Ihre E-Mail",
+                lblMessage: "Ihre Nachricht",
+                btnSend: "Nachricht senden",
+                msgSuccess: "Danke! Wir haben Ihre Nachricht erhalten."
+            },
+            fr: {
+                heroTagline: "Séjournez. Savourez. Explorez le Sri Lanka.",
+                heroTitle: "Découvrez l'âme de l'île",
+                btnExploreStays: "Explorer les séjours",
+                btnWhatsApp: "Discuter sur WhatsApp",
+                aboutTitle: "Notre Histoire",
+                aboutSubTitle: "L'authenticité rencontre le confort",
+                aboutText1: "Ceylon Island Vibe est une collection soignée d'expériences conçues pour le voyageur moderne recherchant la profondeur. Nous croyons au slow travel.",
+                aboutText2: "Des collines brumeuses d'Ella aux plages dorées de Weligama, nous vous connectons au cœur de la culture sri-lankaise.",
+                stayTitle: "Hébergements sélectionnés",
+                staySubtitle: "Des refins choisis pour la détente.",
+                stay1Loc: "Ella, Pays des collines",
+                stay1Title: "Heavens Gate",
+                stay1Desc: "Un hôtel boutique perché au bord de la falaise d'Ella. Réveillez-vous face aux nuages flottants et aux plantations de thé.",
+                stay2Loc: "Weligama, Côte sud",
+                stay2Title: "Ocean Echo Villa",
+                stay2Desc: "Une villa privée à quelques pas du surf. Design minimaliste et charme tropical, parfait pour les couples.",
+                btnViewDetails: "Voir détails",
+                tasteLoc: "Ella et plus",
+                tasteTitle: "Savourez les saveurs authentiques",
+                tasteText: "Découvrez la vraie épice de Ceylon. Nous vous guidons vers des trésors cachés comme le restaurant Chingu à Ella. Fruits de mer et curry préparés avec amour.",
+                btnDiningPlan: "Planifier vos repas",
+                exploreTitle: "Aventures océaniques",
+                exploreSubtitle: "Expériences sûres et guidées.",
+                exp1Loc: "Baie de Weligama",
+                exp1Title: "Sessions de Surf",
+                exp1Desc: "Que vous soyez débutant ou pro, nos instructeurs certifiés vous guideront vers la vague parfaite. Location d'équipement incluse.",
+                exp2Loc: "Mirissa & Weligama",
+                exp2Title: "Tours de Snorkeling",
+                exp2Desc: "Plongez dans des eaux cristallines pour explorer des récifs coralliens vibrants. Une aventure familiale respectueuse de la nature.",
+                btnBook: "Réserver",
+                galleryTitle: "Moments de l'île",
+                whyTitle: "Pourquoi nous choisir",
+                whySubtitle: "Nous créons des parcours, pas des réservations.",
+                why1Title: "Sélectionné",
+                why1Desc: "Lieux inspectés personnellement garantissant qualité.",
+                why2Title: "Fiable",
+                why2Desc: "Très bien noté par les voyageurs européens.",
+                why3Title: "Authentique",
+                why3Desc: "Vraies connexions avec la culture locale.",
+                why4Title: "Personnel",
+                why4Desc: "Nous vous traitons comme une famille.",
+                contactTitle: "Commencez votre voyage",
+                contactSubtitle: "Contactez-nous pour des recommandations.",
+                lblName: "Votre Nom",
+                lblEmail: "Votre Email",
+                lblMessage: "Votre Message",
+                btnSend: "Envoyer message",
+                msgSuccess: "Merci! Nous avons reçu votre message."
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.lang === lang) btn.classList.add('active');
+            });
+
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.textContent = translations[lang][key];
+                        el.style.opacity = '1';
+                    }, 200);
+                }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(element) {
+            const img = element.querySelector('img');
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            if (event.target === lightbox || event.target.classList.contains('lightbox-close')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('contactForm');
+            const feedback = document.getElementById('formFeedback');
+            const btn = form.querySelector('button');
+            
+            btn.textContent = "...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                form.style.display = 'none';
+                feedback.style.display = 'block';
+                feedback.classList.add('reveal', 'active');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
